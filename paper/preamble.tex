@@ -1,0 +1,57 @@
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{xspace}
+\usepackage[sort&compress]{natbib}
+\usepackage[hang,flushmargin]{footmisc}
+
+
+% style tweaks
+\newcommand{\acronym}[1]{{\small{#1}}}
+\newcommand{\project}[1]{\textsl{#1}}
+\newcommand{\code}[1]{{\texttt{#1}}}
+\newcommand{\todo}[1]{\textcolor{red}{#1}}
+
+% the following is stolen from Adrian Price-Whelan (github.com/adrn/latex-init):
+\usepackage{hyperref}
+\definecolor{niceblue}{rgb}{0.0, 0.4, 0.65}
+\definecolor{linkcolor}{rgb}{0.02,0.35,0.55}
+\definecolor{citecolor}{rgb}{0.4,0.4,0.4}
+\hypersetup{colorlinks=true,linkcolor=linkcolor,citecolor=citecolor,
+            filecolor=linkcolor,urlcolor=linkcolor}
+\hypersetup{pageanchor=false}
+
+% astronomy
+\newcommand{\teff}{\ensuremath{T_{\rm eff}}}
+\newcommand{\logg}{\ensuremath{\log g}}
+\newcommand{\feh}{\ensuremath{\mathrm{[Fe/H]}}}
+\newcommand{\vt}{\ensuremath{v_t}}
+\newcommand{\mh}{\ensuremath{\mathrm{[M/H]}}}
+\newcommand{\xh}{\ensuremath{\mathrm{[X/H]}}}
+\newcommand{\I}{\textsc{I}}
+\newcommand{\II}{\textsc{II}}
+\newcommand{\vsini}{\ensuremath{v \sin{i}}}
+\newcommand{\gcm}{\ensuremath{\mathrm{g}~\mathrm{cm}^{-3}}}
+\newcommand{\kms}{\ensuremath{\mathrm{km}~\mathrm{s}^{-1}}}
+\newcommand{\masyr}{\ensuremath{\mathrm{mas}~\mathrm{yr}^{-1}}}
+\newcommand{\msun}{\ensuremath{\mathrm{M}_\odot}}
+\newcommand{\ang}{\text{\normalfont\AA}}
+
+
+\newcommand{\TF}{\code{TensorFlow}\xspace}
+\newcommand{\python}{\code{python}\xspace}
+\newcommand{\HARPS}{\project{\acronym{HARPS}}\xspace}
+\newcommand{\HIRES}{\project{\acronym{HIRES}}\xspace}
+\newcommand{\RV}{\acronym{RV}\xspace}
+\newcommand{\EPRV}{\acronym{EPRV}\xspace}
+
+
+% stolen from Ben Pope:
+\newcommand{\kepler}{\emph{Kepler}\xspace}
+\newcommand{\hipparcos}{\emph{Hipparcos}\xspace}
+\newcommand{\gaia}{\emph{Gaia}\xspace}
+\newcommand{\ktwo}{\emph{K2}\xspace}
+
+% misc shortcuts
+\newcommand{\flatiron}{Flatiron Institute, Simons Foundation, 162 Fifth Ave, New York, NY 10010, USA}
+\newcommand{\chicago}{Department of Astronomy and Astrophysics, University of
+Chicago, 5640 S. Ellis Ave, Chicago, IL 60637, USA}

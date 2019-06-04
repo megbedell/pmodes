@@ -1,0 +1,113 @@
+\documentclass[modern]{aastex62}
+
+\include{preamble}
+
+\shorttitle{Working Title}
+\shortauthors{Bedell et al.}
+
+\setlength{\parindent}{1.4em} % trust in Hogg
+\begin{document}\sloppy\sloppypar\raggedbottom\frenchspacing % trust in Hogg
+
+\graphicspath{ {figures/} }
+\DeclareGraphicsExtensions{.pdf,.eps,.png}
+
+\title{Title}
+
+\author[0000-0001-9907-7742]{Megan Bedell}
+\affiliation{\flatiron}
+
+\author{David W. Hogg}
+
+\author{Benjamin Pope}
+
+\author{Will Farr}
+
+\author{(in no particular order)}
+
+\correspondingauthor{Megan Bedell}
+\email{mbedell@flatironinstitute.org}
+
+
+\begin{abstract}\noindent
+\todo{to be written}
+% context
+% aims
+% methods
+% results
+\end{abstract}
+
+\section{Introduction}
+\label{s:intro}
+
+There are many sources of noise in \EPRV arising from stellar variability on different timescales. 
+Modern observing programs are engineered to minimize the contributions of such signals to the final \RV time series.
+
+One tall pole in the \EPRV error budget is asteroseismic oscillations. 
+Previous work has been done on mitigating these via optimal integration timescales.
+
+There are, however, downsides to integrating over these oscillations. 
+Instead we might want to \textit{resolve} and model the asteroseismic signals.
+
+In this work, we use a combination of realistic simulations and actual \HARPS data to explore the potential benefits of observing strategies for \EPRV which resolve stellar p-mode oscillations. 
+
+
+\section{Simulated Data}
+
+\begin{itemize}
+\item Power spectra used: simple solar-like oscillator with p-modes only and with granulation too
+\item (two-panel plot of power spectra)
+\item How WF's GP model works
+\item Timestamps of observations
+\item (two-panel plot of full, noise-free observations)
+\item Making these into realistic observations: how we handle binning + noise injections (both photon + read noise)
+\end{itemize}
+
+\section{Observing Strategies}
+
+\subsection{Long Exposures}
+
+Test performance of integrating over p-modes. Show that due to stochasticity, an ``optimal'' exposure time isn't always optimal.
+
+\subsection{Short Exposures}
+
+Test performance of resolving p-modes. Say some things about Nyquist limits to motivate choice of exposure times.
+
+\begin{itemize}
+\item Functional form of model used
+\item Performance in several regimes of read noise/read-out time
+\item Does this still work with granulation included?
+\end{itemize}
+
+\subsection{Hybrid Strategies}
+
+???
+
+\section{Validation on Real Data}
+
+\HARPS observations of asteroseismic star -- probably 18 Sco \citep{Bazot2012}.
+
+\section{Conclusions}
+
+Recommendations for observers.
+
+Potential limitations -- will other noise sources leak in? Is there any chance that this will bias recovery of planet signals?
+
+
+\acknowledgements
+The authors thank Rodrigo Luger, Simon J. Murphy, Didier Queloz, and Lily Zhao for useful conversations.
+
+\software{
+    \code{Astropy} \citep{astropy},
+    \code{IPython} \citep{ipython},
+    \code{matplotlib} \citep{matplotlib},
+    \code{numpy} \citep{numpy},
+    \code{scipy} (\url{https://www.scipy.org/}),
+}
+
+% \facility{}
+
+\clearpage
+\bibliographystyle{aasjournal}
+\bibliography{ms}
+
+\end{document}
