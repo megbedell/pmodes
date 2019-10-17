@@ -1,39 +1,76 @@
 \documentclass[modern]{aastex62}
+\graphicspath{ {figures/} }
+\DeclareGraphicsExtensions{.pdf,.eps,.png}
 
 \include{preamble}
 
-\shorttitle{Working Title}
-\shortauthors{Bedell et al.}
+\shorttitle{mitigation of p-mode noise}
+\shortauthors{bedell \textit{et al.}}
 
 \setlength{\parindent}{1.4em} % trust in Hogg
 \begin{document}\sloppy\sloppypar\raggedbottom\frenchspacing % trust in Hogg
 
-\graphicspath{ {figures/} }
-\DeclareGraphicsExtensions{.pdf,.eps,.png}
-
-\title{Title}
+\title{\textbf{%
+Mitigation of p-mode noise for exoplanet search and discovery
+}}
 
 \author[0000-0001-9907-7742]{Megan Bedell}
 \affiliation{\flatiron}
 
-\author{David W. Hogg}
+\author[0000-0003-2866-9403]{David W. Hogg}
+\affiliation{\flatiron}
+\affiliation{\nyuccpp}
+\affiliation{\nyucds}
+\affiliation{\mpia}
 
-\author{Benjamin Pope}
+\author[0000-0002-9328-5652]{Dan Foreman-Mackey}
+\affiliation{\flatiron}
 
-\author{Will Farr}
-
-\author{(in no particular order)}
+\author{others}
 
 \correspondingauthor{Megan Bedell}
 \email{mbedell@flatironinstitute.org}
 
-
 \begin{abstract}\noindent
-\todo{to be written}
 % context
+Decade-scale surveys taking extreme precision radial-velocity (\EPRV)
+measurements provide our best hope for finding and characterizing
+truly Earth-like planets around nearby Sun-like stars.
+The best \EPRV measurements are not currently limited by photon noise;
+they are limited by the intrinsic variability of the target stars.
+The simplest kind of variability, in some sense, is the variability
+created by the fact that the target stars are, in general, pulsating
+in asteroseismic pressure modes (p-modes).
 % aims
+Here we look at some of the practical and information-theoretic
+considerations around different strategies for mitigating p-mode
+noise.
 % methods
+We simulate the p-mode-induced intrinsic stellar surface variability
+with a dynamical system that is a forest of modes, each of which is an
+damped, driven harmonic oscillator, independently driven by white noise.
+We consider p-mode mitigation strategies that involve choosing
+sensible exposure times, including fine-tuned exposure times that
+(nearly) null the dominant modes, short exposure times that resolve
+the modes, and long exposure times that integrate over many mode
+periods.
+We consider data-analysis methods that treat the measurements as
+independent measurements of the stellar velocity (simple chi-squared
+fitting) and methods that model the noise as correlated in the way
+that the mixture of p-mode contributions should be (kernel or
+Gaussian-process methods).
 % results
+We find that, independent of the choice of exposure time, the
+sensitivity of an \EPRV search or characterization project to
+small-amplitude planet signals is improved if the data are analyzed
+with an accurate p-mode noise model.
+Furthermore, we find no advantage, in this data-analysis framework, to
+choosing exposure times that are optimal for nulling the p-mode noise.
+One limitation of these conclusions is that a good p-mode noise model
+requires knowledge of the p-mode spectrum (mode frequencies and
+amplitudes) this advocates taking some \EPRV or photometric data on
+each target star at short enough cadences to resolve the modes; it's
+a small price to pay for \emph{Earth 2.0}.
 \end{abstract}
 
 \section{Introduction}
@@ -86,15 +123,25 @@ Test performance of resolving p-modes. Say some things about Nyquist limits to m
 
 \HARPS observations of asteroseismic star -- probably 18 Sco \citep{Bazot2012}.
 
-\section{Conclusions}
+\section{Discussion}
 
 Recommendations for observers.
 
 Potential limitations -- will other noise sources leak in? Is there any chance that this will bias recovery of planet signals?
 
+Need to know mode spectrum
+
+The possibility that there are Teff variations that are observable.
 
 \acknowledgements
-The authors thank Rodrigo Luger, Simon J. Murphy, Didier Queloz, and Lily Zhao for useful conversations.
+The authors thank
+  Ben Pope (NYU),
+  Will Farr (Flatiron),
+  Rodrigo Luger (Flatiron),
+  Simon J. Murphy (Sydney??),
+  Didier Queloz (Cambridge), and
+  Lily Zhao (Yale)
+for useful conversations.
 
 \software{
     \code{Astropy} \citep{astropy},
