@@ -50,6 +50,31 @@ def plot_validation_test(t, y, yerr, y_pred, t_all, y_all, yerr_all, y_pred_all,
     
     return fig
 
+def plot_validation_test_full(t, y, yerr, y_pred, t_all, y_all, yerr_all, y_pred_all, 
+                         t_grid, mu, sd, xlim_plot=xlim_plot):
+    fig, (ax1,ax2) = plt.subplots(2, 1, figsize=(14,6), sharex=True, 
+                              gridspec_kw={'height_ratios':[3,1], 'hspace':0.1})
+                              
+    art = ax1.fill_between(t_grid, mu + sd, mu - sd, color="C1", alpha=0.3)
+    art.set_edgecolor("none")
+    ax1.plot(t_grid, mu, color="C1", label="prediction")
+
+    ax1.errorbar(t_all, y_all, yerr=yerr_all, fmt=".k", capsize=0, label='validation data')
+    ax1.errorbar(t, y, yerr=yerr, fmt=".r", capsize=0, label="training data")
+    ax1.legend(fontsize=12)
+
+    ax2.errorbar(t_all, y_all - y_pred_all, yerr=yerr_all, fmt=".k", capsize=0, label="resids", alpha=0.3)
+    ax2.errorbar(t, y - y_pred, yerr=yerr, fmt=".r", capsize=0, label="resids", alpha=0.3)
+
+    chisq = np.sum(((y_all - y_pred_all)/yerr_all))**2
+    ax2.text(0.02, 0.7, r'$\chi^2$ = {0:.2f}'.format(chisq), fontsize=12, 
+             transform=ax2.transAxes, bbox=dict(facecolor='white', alpha=0.5))
+    ax2.set_xlabel('Time (s)', fontsize=14)
+    ax1.set_ylabel(r'RV (m s$^{-1}$)', fontsize=14)
+    ax2.set_ylabel('Resids', fontsize=12)
+    
+    return fig
+
 ### FOR NOTEBOOK 03:
 
 def plot_nights(t, y, yerr, y_pred, start_ts, t_grid, mu, sd):
@@ -64,7 +89,9 @@ def plot_nights(t, y, yerr, y_pred, start_ts, t_grid, mu, sd):
         ax.errorbar(t, y, yerr=yerr, fmt=".k", capsize=0, label="data")
 
     for ax in ax2: # residuals
-        ax.errorbar(t, y - y_pred, yerr=yerr, fmt=".k", capsize=0, label="resids", alpha=0.3)
+        ax.axhline(0., color='C1', ls='--', alpha=0.5)
+        ax.errorbar(t, y - y_pred, yerr=yerr, fmt=".k", capsize=0, label="resids", alpha=0.6)
+
 
     ax2[1].set_xlabel('Time (s)', fontsize=14)
     ax1[0].set_ylabel(r'RV (m s$^{-1}$)', fontsize=14)
@@ -90,8 +117,11 @@ def plot_year(t, y, yerr, y_pred, start_ts, t_grid, mu, sd):
 
     ax1.errorbar(t, y, yerr=yerr, fmt=".k", capsize=0, label="data")
 
+    ax2.axhline(0., color='C1', ls='--', alpha=0.5)
     ax2.errorbar(t, y - y_pred, yerr=yerr, fmt=".k", capsize=0, label="resids", alpha=0.3)
-
+    
+    ax1.text(0.05, 0.9, 'RMS = {0:.2f} m/s'.format(np.sqrt(np.sum((y - y_pred)**2/len(y)))), 
+             fontsize=12, transform=ax1.transAxes, bbox=dict(facecolor='white', alpha=0.5))
     ax2.set_xlabel('Time (s)', fontsize=14)
     ax1.set_ylabel(r'RV (m s$^{-1}$)', fontsize=14)
     ax2.set_ylabel('Resids', fontsize=12)
