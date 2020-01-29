@@ -127,3 +127,48 @@ def plot_year(t, y, yerr, y_pred, start_ts, t_grid, mu, sd):
     ax2.set_ylabel('Resids', fontsize=12)
         
     return fig
+
+def make_t_grid(start_ts, time_per_night):
+    t_grid = np.ravel([np.linspace(t - 120, t + time_per_night + 60, 100) for t in start_ts]) # fine grid around the observed times
+    t_grid = np.append(t_grid, np.linspace(start_ts.min(), start_ts.max(), 500)) # coarser grid for in between nights
+    t_grid.sort()
+    return t_grid
+
+def gp_fit(t, y, yerr, t_grid, integrated=False, exp_time=60.):
+    with pm.Model() as model:
+        logS0 = pm.Normal("logS0", mu=0.4, sd=5.0, testval=np.log(np.var(y)))
+        logw0 = pm.Normal("logw0", mu=-3.9, sd=0.1)
+        logQ = pm.Normal("logQ", mu=3.5, sd=5.0)
+        
+        # Set up the kernel and GP
+        kernel = terms.SHOTerm(log_S0=logS0, log_w0=logw0, log_Q=logQ)
+        if integrated:
+            kernel_int = terms.IntegratedTerm(kernel, exp_time)
+            gp = GP(kernel_int, t, yerr ** 2)
+        else:
+            gp = GP(kernel, t, yerr ** 2)
+
+        # Add a custom "potential" (log probability function) with the GP likelihood
+        pm.Potential("gp", gp.log_likelihood(y))
+
+    with model:
+        map_soln = xo.optimize(start=model.test_point)
+        mu, var = xo.eval_in_model(gp.predict(t_grid, return_var=True), map_soln)
+        sd = np.sqrt(var)
+        y_pred = xo.eval_in_model(gp.predict(t), map_soln)
+
+    return map_soln, mu, sd, y_pred
+
+def gp_predict(t, y, yerr, t_grid, logS0=0.4, logw0=-3.9, logQ=3.5,
+               integrated=False, exp_time=60.):
+    kernel = terms.SHOTerm(log_S0=logS0, log_w0=logw0, log_Q=logQ)
+    if integrated:
+        kernel_int = terms.IntegratedTerm(kernel, exp_time)
+        gp = GP(kernel_int, t, yerr ** 2)
+    else:
+        gp = GP(kernel, t, yerr ** 2)
+    gp.marginal("gp", observed=y)
+    mu, var = gp.predict(t_grid, return_var=True)
+    sd = np.sqrt(var)
+    y_pred = gp.predict(t)
+    return y_pred, mu, sd
