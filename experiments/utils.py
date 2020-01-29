@@ -120,11 +120,13 @@ def plot_year(t, y, yerr, y_pred, start_ts, t_grid, mu, sd):
     ax2.axhline(0., color='C1', ls='--', alpha=0.5)
     ax2.errorbar(t, y - y_pred, yerr=yerr, fmt=".k", capsize=0, label="resids", alpha=0.3)
     
-    ax1.text(0.05, 0.9, 'RMS = {0:.2f} m/s'.format(np.sqrt(np.sum((y - y_pred)**2/len(y)))), 
-             fontsize=12, transform=ax1.transAxes, bbox=dict(facecolor='white', alpha=0.5))
+    ax1.text(0.05, 0.85, 'raw RMS = {0:.2f} m/s\nresids RMS = {1:.2f} m/s'.format(np.sqrt(np.sum((y)**2/len(y))),
+                                                                             np.sqrt(np.sum((y - y_pred)**2/len(y)))), 
+             fontsize=12, transform=ax1.transAxes, bbox=dict(facecolor='white', alpha=0.9))
     ax2.set_xlabel('Time (s)', fontsize=14)
     ax1.set_ylabel(r'RV (m s$^{-1}$)', fontsize=14)
     ax2.set_ylabel('Resids', fontsize=12)
+    ax2.set_xlim([t_grid.min() - 7 * 3600 * 24, t_grid.max() + 7 * 3600 * 24])
         
     return fig
 
@@ -161,14 +163,16 @@ def gp_fit(t, y, yerr, t_grid, integrated=False, exp_time=60.):
 
 def gp_predict(t, y, yerr, t_grid, logS0=0.4, logw0=-3.9, logQ=3.5,
                integrated=False, exp_time=60.):
-    kernel = terms.SHOTerm(log_S0=logS0, log_w0=logw0, log_Q=logQ)
-    if integrated:
-        kernel_int = terms.IntegratedTerm(kernel, exp_time)
-        gp = GP(kernel_int, t, yerr ** 2)
-    else:
-        gp = GP(kernel, t, yerr ** 2)
-    gp.marginal("gp", observed=y)
-    mu, var = gp.predict(t_grid, return_var=True)
-    sd = np.sqrt(var)
-    y_pred = gp.predict(t)
+    with pm.Model() as model:
+        kernel = terms.SHOTerm(log_S0=logS0, log_w0=logw0, log_Q=logQ)
+        if integrated:
+            kernel_int = terms.IntegratedTerm(kernel, exp_time)
+            gp = GP(kernel_int, t, yerr ** 2)
+        else:
+            gp = GP(kernel, t, yerr ** 2)
+        gp.condition(y)
+        mu, var = xo.eval_in_model(gp.predict(t_grid, return_var=True))
+        sd = np.sqrt(var)
+        y_pred = xo.eval_in_model(gp.predict(t))
+        
     return y_pred, mu, sd
