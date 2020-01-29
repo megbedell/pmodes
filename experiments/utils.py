@@ -77,7 +77,7 @@ def plot_validation_test_full(t, y, yerr, y_pred, t_all, y_all, yerr_all, y_pred
 
 ### FOR NOTEBOOK 03:
 
-def plot_nights(t, y, yerr, y_pred, start_ts, t_grid, mu, sd):
+def plot_nights(t, y, yerr, y_pred, start_ts, t_grid, mu, sd, time_per_night=900.):
     fig, (ax1,ax2) = plt.subplots(2, 3, figsize=(20,6), sharey=True, 
                               gridspec_kw={'height_ratios':[3,1], 'hspace':0.05, 'wspace':0.1})
 
@@ -98,12 +98,12 @@ def plot_nights(t, y, yerr, y_pred, start_ts, t_grid, mu, sd):
     ax2[0].set_ylabel('Resids', fontsize=12)
 
     for i,ax in enumerate(ax1):
-        ax.set_xlim([start_ts[i] - 60, start_ts[i] + 900])
+        ax.set_xlim([start_ts[i] - 120, start_ts[i] + time_per_night + 60])
         ax.text(0.05, 0.9, 't = {0:.1f} days'.format(start_ts[i]/24./3600.), 
                 fontsize=12, transform=ax.transAxes)
         ax.xaxis.set_ticklabels([])
     for i,ax in enumerate(ax2):
-        ax.set_xlim([start_ts[i] - 60, start_ts[i] + 900])
+        ax.set_xlim([start_ts[i] - 120, start_ts[i] + time_per_night + 60])
         
     return fig
 
