@@ -78,32 +78,33 @@ def plot_validation_test_full(t, y, yerr, y_pred, t_all, y_all, yerr_all, y_pred
 ### FOR NOTEBOOK 03:
 
 def plot_nights(t, y, yerr, y_pred, start_ts, t_grid, mu, sd, time_per_night=900.):
-    fig, (ax1,ax2) = plt.subplots(2, 3, figsize=(20,6), sharey=True, 
+    fig, (ax1,ax2) = plt.subplots(2, 3, figsize=(20,6), sharey='row', sharex='col',
                               gridspec_kw={'height_ratios':[3,1], 'hspace':0.05, 'wspace':0.1})
 
-    for ax in ax1: # data + fit
-        art = ax.fill_between(t_grid, mu + sd, mu - sd, color="C1", alpha=0.3)
+    for i,ax in enumerate(ax1): # data + fit
+        
+        art = ax.fill_between((t_grid - start_ts[i])/60., 
+                              mu + sd, mu - sd, color="C1", alpha=0.3)
         art.set_edgecolor("none")
-        ax.plot(t_grid, mu, color="C1", label="prediction")
+        ax.plot((t_grid - start_ts[i])/60., mu, color="C1", label="prediction")
 
-        ax.errorbar(t, y, yerr=yerr, fmt=".k", capsize=0, label="data")
+        ax.errorbar((t - start_ts[i])/60., y, yerr=yerr, 
+                    fmt=".k", capsize=0, label="data")
 
     for ax in ax2: # residuals
         ax.axhline(0., color='C1', ls='--', alpha=0.5)
-        ax.errorbar(t, y - y_pred, yerr=yerr, fmt=".k", capsize=0, label="resids", alpha=0.6)
+        ax.errorbar((t - start_ts[i])/60., y - y_pred, yerr=yerr, 
+                    fmt=".k", capsize=0, label="resids", alpha=0.6)
 
 
-    ax2[1].set_xlabel('Time (s)', fontsize=14)
+    ax2[1].set_xlabel('Time (min)', fontsize=14)
     ax1[0].set_ylabel(r'RV (m s$^{-1}$)', fontsize=14)
     ax2[0].set_ylabel('Resids', fontsize=12)
 
     for i,ax in enumerate(ax1):
-        ax.set_xlim([start_ts[i] - 120, start_ts[i] + time_per_night + 60])
+        ax.set_xlim([-2, time_per_night/60 + 1])
         ax.text(0.05, 0.9, 't = {0:.1f} days'.format(start_ts[i]/24./3600.), 
                 fontsize=12, transform=ax.transAxes)
-        ax.xaxis.set_ticklabels([])
-    for i,ax in enumerate(ax2):
-        ax.set_xlim([start_ts[i] - 120, start_ts[i] + time_per_night + 60])
         
     return fig
 
