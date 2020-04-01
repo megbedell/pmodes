@@ -77,7 +77,7 @@ def plot_validation_test_full(t, y, yerr, y_pred, t_all, y_all, yerr_all, y_pred
 
 ### FOR NOTEBOOK 03:
 
-def plot_nights(t, y, yerr, y_pred, start_ts, t_grid, mu, sd, time_per_night=900.):
+def plot_nights(t, y, yerr, y_pred, start_ts, t_grid, mu, sd, t_true, y_true, time_per_night=900.):
     fig, (ax1,ax2) = plt.subplots(2, 3, figsize=(20,6), sharey='row', sharex='col',
                               gridspec_kw={'height_ratios':[3,1], 'hspace':0.05, 'wspace':0.1})
 
@@ -90,6 +90,8 @@ def plot_nights(t, y, yerr, y_pred, start_ts, t_grid, mu, sd, time_per_night=900
 
         ax.errorbar((t - start_ts[i])/60., y, yerr=yerr, 
                     fmt=".k", capsize=0, label="data")
+        
+        ax.plot((t_true - start_ts[i])/60., y_true, color='C0', alpha=0.7, ls='--')
 
     for ax in ax2: # residuals
         ax.axhline(0., color='C1', ls='--', alpha=0.5)
@@ -138,6 +140,7 @@ def make_t_grid(start_ts, time_per_night):
     return t_grid
 
 def gp_fit(t, y, yerr, t_grid, integrated=False, exp_time=60.):
+    # optimize kernel hyperparameters and return fit + predictions
     with pm.Model() as model:
         logS0 = pm.Normal("logS0", mu=0.4, sd=5.0, testval=np.log(np.var(y)))
         logw0 = pm.Normal("logw0", mu=-3.9, sd=0.1)
@@ -164,6 +167,7 @@ def gp_fit(t, y, yerr, t_grid, integrated=False, exp_time=60.):
 
 def gp_predict(t, y, yerr, t_grid, logS0=0.4, logw0=-3.9, logQ=3.5,
                integrated=False, exp_time=60.):
+    # take kernel hyperparameters as fixed inputs, train + predict
     with pm.Model() as model:
         kernel = terms.SHOTerm(log_S0=logS0, log_w0=logw0, log_Q=logQ)
         if integrated:
@@ -176,4 +180,38 @@ def gp_predict(t, y, yerr, t_grid, logS0=0.4, logw0=-3.9, logQ=3.5,
         sd = np.sqrt(var)
         y_pred = xo.eval_in_model(gp.predict(t))
         
+    return y_pred, mu, sd
+
+def multi_gp_predict(t, y, yerr, t_grid, 
+                    integrated=False, exp_time=60.):
+    # this code is GARBAGE. but in principle does gp_predict() for a full comb of modes.
+    a_max = 0.55 # amplitude of central mode in m/s
+    nu_max = 3.1e-3 # peak frequency in Hz
+    c_env = 0.331e-3 # envelope width in Hz
+    delta_nu = 0.00013 # Hz
+    gamma = 1. / (2 * 24. * 60. * 60.) # s^-1 ; 2-day damping timescale
+    freq_grid = np.arange(nu_max - 0.001, nu_max + 0.001, delta_nu) # magic numbers
+    amp_grid = a_max**2 * np.exp(-(freq_grid-nu_max)**2/(2.*c_env**2)) # amplitudes in m/s
+    driving_amp_grid = np.sqrt(amp_grid * gamma * dt)
+    log_S0_grid = [np.log(d**2 / (dt * o)) for o,d in zip(omega_grid,driving_amp_grid)]
+    with pm.Model() as model:
+        kernel = None
+        for o,lS in zip(omega_grid,log_S0_grid):
+            if kernel is None:
+                kernel = terms.SHOTerm(log_S0=lS, 
+                                        log_w0=np.log(o), 
+                                        log_Q=np.log(o/gamma))
+            else:
+                kernel += terms.SHOTerm(log_S0=lS, 
+                                        log_w0=np.log(o), 
+                                        log_Q=np.log(o/gamma))
+        if integrated:
+            kernel_int = terms.IntegratedTerm(kernel, exp_time)
+            gp = GP(kernel_int, t, yerr ** 2)
+        else:
+            gp = GP(kernel, t, yerr ** 2)
+        gp.condition(y)
+        mu, var = xo.eval_in_model(gp.predict(t_grid, return_var=True))
+        sd = np.sqrt(var)
+        y_pred = xo.eval_in_model(gp.predict(t))  
     return y_pred, mu, sd
