@@ -1,0 +1,16 @@
+name: pmodes
+channels:
+  - defaults
+  - conda-forge
+dependencies:
+  - astropy
+  - pandas
+  - matplotlib
+  - pip
+  - python=3.7
+  - numpy
+  - autograd
+  - celerite
+  - ipykernel
+  - pip:
+    - -r requirements.txt
