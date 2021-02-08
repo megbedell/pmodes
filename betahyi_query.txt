@@ -1,3 +1,0 @@
-psql -h harps.guru -d orchestra -U publicuser
-\o rvs.txt
-select date_obs, mjd, drs_bjd as bjd, drs_ccf_rvc as rv, drs_dvrms as err_rv, exptime, object from obs where object like 'Beta-Hyi';
