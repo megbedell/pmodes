@@ -82,13 +82,19 @@ a small price to pay for \emph{Earth 2.0}.
 There are many sources of noise in \EPRV arising from stellar variability on different timescales. 
 Modern observing programs are engineered to minimize the contributions of such signals to the final \RV time series.
 
-One tall pole in the \EPRV error budget is asteroseismic oscillations. 
-Previous work has been done on mitigating these via optimal integration timescales.
+One significant source of stellar noise in the \EPRV error budget is asteroseismic oscillations, which have a typical amplitude of a few \ms\ for Sun-like stars. 
+The default approach to minimize the influence of this signal is purposefully integrating for 10 minutes or more \citep{Dumusque2011}. 
+This effectively averages over the (approximately sinusoidal) oscillation signal. 
+If the star is bright enough to saturate the detector during a long integration, as a significant number of prime \EPRV targets are, multiple short exposures may be taken and binned. 
+
+More recently, \citet{Chaplin2019} put forward the alternative of setting each target's integration time to be a multiple of the individual star's expected oscillation period. 
+This optimal exposure time approach similarly aims to average over the stellar oscillation signal and is more robust in the regime of short exposure times--- for example, as demonstrated by \citet{Chaplin2019} with synthetic stellar oscillation spectra, an exposure time that happens to be 1.5 times the characteristic oscillation period of the star is actually pessimal. 
+Thus, when aiming for \RV precision of 0.1 \ms\ and simultaneously trying to observe targets efficiently (\ie not integrating for long periods of time to include many oscillation cycles), an arbitrarily chosen integration time is not sufficient to deal with asteroseismic noise.
 
 There are, however, downsides to integrating over these oscillations. 
 Instead we might want to \textit{resolve} and model the asteroseismic signals.
 
-In this work, we use a combination of realistic simulations and actual \HARPS data to explore the potential benefits of observing strategies for \EPRV which resolve stellar p-mode oscillations. 
+In this work, we use a combination of realistic simulations and actual \EXPRES data to explore the potential benefits of observing strategies for \EPRV which resolve stellar p-mode oscillations. 
 
 
 \section{Simulated Data}
