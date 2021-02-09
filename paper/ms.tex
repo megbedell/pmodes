@@ -4,7 +4,7 @@
 
 \include{preamble}
 
-\shorttitle{mitigation of p-mode noise}
+\shorttitle{Observing strategies for p-modes}
 \shortauthors{bedell \textit{et al.}}
 
 \setlength{\parindent}{1.4em} % trust in Hogg
@@ -35,6 +35,7 @@
 \email{mbedell@flatironinstitute.org}
 
 \begin{abstract}\noindent
+\todo{(this will be rewritten, probably many times!)} 
 % context
 Decade-scale surveys taking extreme precision radial-velocity (\EPRV)
 measurements provide our best hope for finding and characterizing
@@ -79,22 +80,42 @@ a small price to pay for \emph{Earth 2.0}.
 \section{Introduction}
 \label{s:intro}
 
-There are many sources of noise in \EPRV arising from stellar variability on different timescales. 
-Modern observing programs are engineered to minimize the contributions of such signals to the final \RV time series.
+Modern Extreme Precision Radial Velocity (\EPRV) surveys aim for observational precisions of 0.1 \ms, corresponding to the approximate semi-amplitude of an Earth analog around a Solar analog. 
+This level of precision can be achieved by instruments including \EXPRES and \ESPRESSO \citep{Petersburg2020, Pepe2021}. 
+However, instrumental precision alone is insufficient to measure the Doppler signature of an Earth twin. 
+The star itself contributes non-Doppler-shift radial velocity (\RV) signals due to its intrinsic variability, and these effects must be mitigated in some way. 
+Modern observing programs are therefore engineered to minimize the contributions of such signals to the final \RV time series.
 
-One significant source of stellar noise in the \EPRV error budget is asteroseismic oscillations, which have a typical amplitude of a few \ms\ for Sun-like stars. 
-The default approach to minimize the influence of this signal is purposefully integrating for 10 minutes or more \citep{Dumusque2011}. 
-This effectively averages over the (approximately sinusoidal) oscillation signal. 
+One significant source of stellar noise for \EPRV is asteroseismic oscillations. 
+For a Sun-like star, the most observable asteroseismic oscillations are \textit{p-mode} signals with a characteristic period of around 5 minutes and an amplitude on the order of 1 \ms. 
+Unlike some types of stellar activity, asteroseismic oscillations \textit{are} Doppler shifts arising from the radial motion of the stellar surface, so advanced methods of disentangling non-Doppler spectral distortions from the measured \RV will have very limited effect. 
+On the other hand, asteroseismic oscillations are physically well-understood and relatively simple to model, unlike other \RV noise sources. 
+Both of these factors make them a somewhat unique term in the \EPRV error budget.
+
+The default approach to minimize the influence of asteroseismic signals in \EPRV observations is integrating for 10 minutes or more \citep{Dumusque2011}. 
+This is intended to average over a couple cycles of the (approximately sinusoidal) oscillation signal. 
 If the star is bright enough to saturate the detector during a long integration, as a significant number of prime \EPRV targets are, multiple short exposures may be taken and binned. 
 
-More recently, \citet{Chaplin2019} put forward the alternative of setting each target's integration time to be a multiple of the individual star's expected oscillation period. 
-This optimal exposure time approach similarly aims to average over the stellar oscillation signal and is more robust in the regime of short exposure times--- for example, as demonstrated by \citet{Chaplin2019} with synthetic stellar oscillation spectra, an exposure time that happens to be 1.5 times the characteristic oscillation period of the star is actually pessimal. 
-Thus, when aiming for \RV precision of 0.1 \ms\ and simultaneously trying to observe targets efficiently (\ie not integrating for long periods of time to include many oscillation cycles), an arbitrarily chosen integration time is not sufficient to deal with asteroseismic noise.
+More recently, \citet[][hereafter C19]{Chaplin2019} put forward the alternative of setting each target's integration time to be a multiple of the individual star's expected oscillation period. 
+This optimal exposure time approach similarly aims to average over the stellar oscillation signal, but is more robust in the regime of short exposure times. 
+For example, as demonstrated by C19 with synthetic data, an exposure time of 10 minutes is actually pessimal for the Sun-like star $\alpha$~Cen~B. 
+This is because 10 minutes is close to 1.5 times the characteristic oscillation period of the star, which leaves significant asteroseismic noise in the integrated \RV observations. 
+The best choices of exposure time are either an integer multiple of the oscillation period (to integrate over the cycle effectively) or a much longer exposure encompassing $N>>1$ cycles (to achieve a $\sqrt{N}$ reduction in noise). 
+Thus, when aiming for \RV precision of 0.1 \ms\ and simultaneously trying to observe targets efficiently (\ie not integrating for hours on an individual target), an exposure time tailored to the individual target's oscillation period is required to deal with asteroseismic noise.
 
-There are, however, downsides to integrating over these oscillations. 
-Instead we might want to \textit{resolve} and model the asteroseismic signals.
+Even with an optimally-chosen exposure time, there are some drawbacks to integrating over the asteroseismic oscillations. 
+For one thing, the nulling approach will always be limited by the stochastic nature of the oscillations. 
+\todo{(say more)} 
 
-In this work, we use a combination of realistic simulations and actual \EXPRES data to explore the potential benefits of observing strategies for \EPRV which resolve stellar p-mode oscillations. 
+There is also a case to be made that asteroseismic oscillations contain valuable scientific information. 
+Asteroseismology is the only means of observationally constraining the interior composition of stars, and it can provide high-precision estimates of properties like stellar age and mass. 
+Asteroseismology of solar-like oscillators with ground-based \RV data is a well-established field \citep[see e.g.][for a review]{Bedding2003}, but it has been largely incompatible with \RV planet-hunting due to the explicit aim of nulling the asteroseismic signals in exoplanet detection experiments. 
+However, the stellar properties inferred in asteroseismology are also important to studies of exoplanets, so it would be beneficial to \EPRV surveys to preserve asteroseismic information if it can be done without too much cost to the planetary signals.
+
+In this work, we explore the alternative approach of \textit{resolving} and \textit{modeling} asteroseismic signals in \EPRV observations. 
+
+
+We use a combination of realistic simulations and actual \EXPRES data to explore the potential benefits of observing strategies for \EPRV which resolve stellar p-mode oscillations. 
 
 
 \section{Simulated Data}
