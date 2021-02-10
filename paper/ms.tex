@@ -88,16 +88,16 @@ Modern observing programs are therefore engineered to minimize the contributions
 
 One significant source of stellar noise for \EPRV is asteroseismic oscillations. 
 For a Sun-like star, the most observable asteroseismic oscillations are \textit{p-mode} signals with a characteristic period of around 5 minutes and an amplitude on the order of 1 \ms. 
-Unlike some types of stellar activity, asteroseismic oscillations \textit{are} Doppler shifts arising from the radial motion of the stellar surface, so advanced methods of disentangling non-Doppler spectral distortions from the measured \RV will have very limited effect. 
+Unlike some types of stellar activity, p-mode oscillations \textit{are} Doppler shifts arising from the radial motion of the stellar surface, so advanced methods of disentangling non-Doppler spectral distortions from the measured \RV will have very limited effect. 
 On the other hand, asteroseismic oscillations are physically well-understood and relatively simple to model, unlike other \RV noise sources. 
 Both of these factors make them a somewhat unique term in the \EPRV error budget.
 
-The default approach to minimize the influence of asteroseismic signals in \EPRV observations is integrating for 10 minutes or more \citep{Dumusque2011}. 
+The default approach to minimize the influence of p-modes in \EPRV observations is integrating for 10 minutes or more \citep{Dumusque2011}. 
 This is intended to average over a couple cycles of the (approximately sinusoidal) oscillation signal. 
 If the star is bright enough to saturate the detector during a long integration, as a significant number of prime \EPRV targets are, multiple short exposures may be taken and binned. 
 
 More recently, \citet[][hereafter C19]{Chaplin2019} put forward the alternative of setting each target's integration time to be a multiple of the individual star's expected oscillation period. 
-This optimal exposure time approach similarly aims to average over the stellar oscillation signal, but is more robust in the regime of short exposure times. 
+This optimal exposure time approach still aims to average over the stellar oscillation signal, but it is more robust than an arbitrarily chosen exposure duration in the regime of short exposure times. 
 For example, as demonstrated by C19 with synthetic data, an exposure time of 10 minutes is actually pessimal for the Sun-like star $\alpha$~Cen~B. 
 This is because 10 minutes is close to 1.5 times the characteristic oscillation period of the star, which leaves significant asteroseismic noise in the integrated \RV observations. 
 The best choices of exposure time are either an integer multiple of the oscillation period (to integrate over the cycle effectively) or a much longer exposure encompassing $N>>1$ cycles (to achieve a $\sqrt{N}$ reduction in noise). 
@@ -119,6 +119,27 @@ We use a combination of realistic simulations and actual \EXPRES data to explore
 
 
 \section{Simulated Data}
+
+Stellar p-mode oscillations are well-approximated as a set of damped driven simple harmonic oscillators \todo{(citation needed)}. 
+These independent oscillators have their characteristic frequencies and amplitudes set by the seismic power spectrum, which resembles a comb of frequencies centered on \numax\ and separated by \deltanu.
+
+Using this framework, we simulate solar-like oscillations as a dense grid of velocities. 
+\todo{(MATH HERE)}
+\todo{(INSERT FIGURE OF POWER SPECTRUM)}
+
+From this dense grid, we can derive \RV observations with any choice of start time and exposure length by averaging the velocities within that window of observation. 
+As an illustrative example, we show three different choices of observing times in Figure \ref{fig:binning-sim}. 
+\todo{(more -- return to point of stochasticity from intro)}
+
+\begin{figure}
+    \centering
+    \includegraphics{figures/binning_test.pdf}
+    \caption{\todo{caption}}
+    \label{fig:binning-sim}
+\end{figure}
+
+
+
 
 \begin{itemize}
 \item Power spectra used: simple solar-like oscillator with p-modes only and with granulation too
@@ -166,7 +187,7 @@ The possibility that there are Teff variations that are observable.
 \acknowledgements
 
 The authors thank
-  Ben Pope (NYU),
+  Ben Pope (Queensland),
   Will Farr (Flatiron),
   Rodrigo Luger (Flatiron),
   Simon J. Murphy (Sydney),
