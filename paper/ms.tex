@@ -50,38 +50,38 @@ Here we look at some of the practical and information-theoretic
 considerations around different strategies for mitigating p-mode
 noise.
 % methods
-We simulate the p-mode-induced intrinsic stellar surface variability
-with a dynamical system that is a forest of modes, each of which is a
-damped, driven harmonic oscillator, independently driven by white noise.
+%We simulate the p-mode-induced intrinsic stellar surface variability
+%with a dynamical system that is a forest of modes, each of which is a
+%damped, driven harmonic oscillator, independently driven by white noise.
 We consider p-mode mitigation strategies that involve choosing
 sensible exposure times, including fine-tuned exposure times that
 (nearly) null the dominant modes, short exposure times that resolve
 the modes, and long exposure times that integrate over many mode
 periods.
-We consider data-analysis methods that treat the measurements as
-independent measurements of the stellar velocity (simple chi-squared
-fitting) and methods that model the noise as correlated in the way
-that the mixture of p-mode contributions should be (kernel or
-Gaussian-process methods).
+%We consider data-analysis methods that treat the measurements as
+%independent measurements of the stellar velocity (simple chi-squared
+%fitting) and methods that model the noise as correlated in the way
+%that the mixture of p-mode contributions should be (kernel or
+%Gaussian-process methods).
 % results
-We find that, independent of the choice of exposure time, the
-sensitivity of an \EPRV search or characterization project to
-small-amplitude planet signals is improved if the data are analyzed
-with an accurate p-mode noise model.
-Furthermore, we find no advantage, in this data-analysis framework, to
-choosing exposure times that are optimal for nulling the p-mode noise.
-One limitation of these conclusions is that a good p-mode noise model
-requires knowledge of the p-mode spectrum (mode frequencies and
-amplitudes) this advocates taking some \EPRV or photometric data on
-each target star at short enough cadences to resolve the modes; it's
-a small price to pay for \emph{Earth 2.0}.
+%We find that, independent of the choice of exposure time, the
+%sensitivity of an \EPRV search or characterization project to
+%small-amplitude planet signals is improved if the data are analyzed
+%with an accurate p-mode noise model.
+%Furthermore, we find no advantage, in this data-analysis framework, to
+%choosing exposure times that are optimal for nulling the p-mode noise.
+%One limitation of these conclusions is that a good p-mode noise model
+%requires knowledge of the p-mode spectrum (mode frequencies and
+%amplitudes) this advocates taking some \EPRV or photometric data on
+%each target star at short enough cadences to resolve the modes; it's
+%a small price to pay for \emph{Earth 2.0}.
 \end{abstract}
 
 \section{Introduction}
 \label{s:intro}
 
 Modern Extreme Precision Radial Velocity (\EPRV) surveys aim for observational precisions of 0.1 \ms, corresponding to the approximate semi-amplitude of an Earth analog around a Solar analog. 
-This level of precision can be achieved by instruments including \EXPRES and \ESPRESSO \citep{Petersburg2020, Pepe2021}. 
+This level of precision can be achieved by specialized instruments including \EXPRES and \ESPRESSO \citep{Petersburg2020, Pepe2021}. 
 However, instrumental precision alone is insufficient to measure the Doppler signature of an Earth twin. 
 The star itself contributes non-Doppler-shift radial velocity (\RV) signals due to its intrinsic variability, and these effects must be mitigated in some way. 
 Modern observing programs are therefore engineered to minimize the contributions of such signals to the final \RV time series.
@@ -99,9 +99,9 @@ If the star is bright enough to saturate the detector during a long integration,
 More recently, \citet[][hereafter C19]{Chaplin2019} put forward the alternative of setting each target's integration time to be a multiple of the individual star's expected oscillation period. 
 This optimal exposure time approach still aims to average over the stellar oscillation signal, but it is more robust than an arbitrarily chosen exposure duration in the regime of short exposure times. 
 For example, as demonstrated by C19 with synthetic data, an exposure time of 10 minutes is actually pessimal for the Sun-like star $\alpha$~Cen~B. 
-This is because 10 minutes is close to 1.5 times the characteristic oscillation period of the star, which leaves significant asteroseismic noise in the integrated \RV observations. 
+This is because 10 minutes is close to 1.5 times the characteristic oscillation period of the star, which leaves significant asteroseismic signal in the integrated \RV observations. 
 The best choices of exposure time are either an integer multiple of the oscillation period (to integrate over the cycle effectively) or a much longer exposure encompassing $N>>1$ cycles (to achieve a $\sqrt{N}$ reduction in noise). 
-Thus, when aiming for \RV precision of 0.1 \ms\ and simultaneously trying to observe targets efficiently (\ie not integrating for hours on an individual target), an exposure time tailored to the individual target's oscillation period is required to deal with asteroseismic noise.
+Thus, when aiming for \RV precision of 0.1 \ms\ and simultaneously trying to observe targets efficiently (\ie not integrating for hours on an individual target), an exposure time tailored to the individual target's oscillation period is required to null asteroseismic noise optimally.
 
 Even with an optimally-chosen exposure time, there are some drawbacks to integrating over the asteroseismic oscillations. 
 For one thing, the nulling approach will always be limited by the stochastic nature of the oscillations. 
@@ -113,12 +113,11 @@ Asteroseismology of solar-like oscillators with ground-based \RV data is a well-
 However, the stellar properties inferred in asteroseismology are also important to studies of exoplanets, so it would be beneficial to \EPRV surveys to preserve asteroseismic information if it can be done without too much cost to the planetary signals.
 
 In this work, we explore the alternative approach of \textit{resolving} and \textit{modeling} asteroseismic signals in \EPRV observations. 
-
-
 We use a combination of realistic simulations and actual \EXPRES data to explore the potential benefits of observing strategies for \EPRV which resolve stellar p-mode oscillations. 
-
+\todo{(outline section contents)}
 
 \section{Simulated Data}
+\label{s:sim-data}
 
 Stellar p-mode oscillations are well-approximated as a set of damped driven simple harmonic oscillators \todo{(citation needed)}. 
 These independent oscillators have their characteristic frequencies and amplitudes set by the seismic power spectrum, which resembles a comb of frequencies centered on \numax\ and separated by \deltanu.
@@ -134,61 +133,69 @@ Using this framework, we simulate solar-like oscillations as a dense grid of vel
 \end{figure}
 
 From this dense grid, we can derive \RV observations with any choice of start time and exposure length by averaging the velocities within that window of observation. 
-As an illustrative example, we show three different choices of observing times in Figure \ref{fig:binning-sim}. 
-\todo{(more -- return to point of stochasticity from intro)}
+
+
+%\section{Observing Strategies}
+
+%\subsection{Long Exposures}
+
+%Test performance of integrating over p-modes. Show that due to stochasticity, an ``optimal'' exposure time isn't always optimal.
+
+%\subsection{Short Exposures}
+
+%Test performance of resolving p-modes. Say some things about Nyquist limits to motivate choice of exposure times.
+
+%\begin{itemize}
+%\item Functional form of model used
+%\item Performance in several regimes of read noise/read-out time
+%\item Does this still work with granulation included?
+%\end{itemize}
+
+%\subsection{Hybrid Strategies}
+
+%???
+
+\section{The Nulling Approach}
+\label{s:nulling}
+
+We want to test both the amplitude AND level of intrinsic correlation within the residual noise after nulling.
+
+How reliable is the optimal exposure time on a night-to-night basis? Stochasticity of p-mode signal sets an intrinsic noise floor.
+
+Systemic wrongness of the chosen exposure time: how well do we need to know nu-max and what if we get it wrong? How well can we know nu-max? The answer to the latter will be different depending on whether the star has been observed with intensive photometry (Kepler, soon to be PLATO) and, if not, the precision of the stellar parameters plus the goodness of the asteroseismic scaling relation.
 
 \begin{figure}
     \centering
-    \includegraphics[width=0.9\linewidth]{figures/binning_test.pdf}
+    \includegraphics[width=1.1\linewidth]{figures/binning_test.pdf}
     \caption{\todo{caption}}
     \label{fig:binning-sim}
 \end{figure}
 
+\section{The Modeling Approach}
+\label{s:modeling}
 
+GP model. We'll first adopt the exact correct kernel as a demonstration of the best-case scenario.
 
+Demonstrate appropriateness of the model with leave-some-out tests.
 
-\begin{itemize}
-\item Power spectra used: simple solar-like oscillator with p-modes only and with granulation too
-\item (two-panel plot of power spectra)
-\item How WF's GP model works
-\item Timestamps of observations
-\item (two-panel plot of full, noise-free observations)
-\item Making these into realistic observations: how we handle binning + noise injections (both photon + read noise)
-\end{itemize}
+Then look at before/after RMS around the mean timeseries, and also the accuracy of the inferred mean timeseries.
 
-\section{Observing Strategies}
+\section{Application to Real Data}
 
-\subsection{Long Exposures}
-
-Test performance of integrating over p-modes. Show that due to stochasticity, an ``optimal'' exposure time isn't always optimal.
-
-\subsection{Short Exposures}
-
-Test performance of resolving p-modes. Say some things about Nyquist limits to motivate choice of exposure times.
-
-\begin{itemize}
-\item Functional form of model used
-\item Performance in several regimes of read noise/read-out time
-\item Does this still work with granulation included?
-\end{itemize}
-
-\subsection{Hybrid Strategies}
-
-???
-
-\section{Validation on Real Data}
-
-\HARPS observations of asteroseismic star -- probably 18 Sco \citep{Bazot2012}.
+%\HARPS observations of asteroseismic star -- probably 18 Sco \citep{Bazot2012}. 
+\EXPRES Tau Ceti.
 
 \section{Discussion}
 
-Recommendations for observers.
+Recommendations for observers in different regimes: telescope aperture/feasibility of short exposures; different levels of knowledge of target stars and their nu-max; desired noise floor.
 
 Potential limitations -- will other noise sources leak in? Is there any chance that this will bias recovery of planet signals?
 
-Need to know mode spectrum
+Possibility of inferring asteroseismic parameters from RVs, i.e. kernel hyperparameters left as variables.
 
-The possibility that there are Teff variations that are observable.
+Moving to the full spectrum rather than RVs: the possibility that there are Teff variations that are observable.
+
+\section{Conclusions}
 
 \acknowledgements
 
